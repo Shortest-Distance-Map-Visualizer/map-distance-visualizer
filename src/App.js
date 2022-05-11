@@ -1,60 +1,56 @@
-// import { useRef, useEffect, useState } from 'react'
-// import tt from '@tomtom-international/web-sdk-maps'
-// import '@tomtom-international/web-sdk-maps/dist/maps.css'
+import React from "react"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+// import { BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom"
+// import { connect } from "react-redux"
 
 import './App.css'
-import LocationsAdded from './Components/LocationsAdded'
 import Navbar from './Components/Navbar'
-import SearchMap from './Components/SearchMap'
-import Map from './Components/Map'
+import About from './Components/About'
+import Home from './Components/Home'
+import Contact from './Components/Contact'
 
 const locations = ["Hello PG", "Zolo PG", "JP", "ola"]
 
 const App = () => {
 
-  // const mapElement = useRef()
-  // const [map, setMap] = useState({})
-
-  // useEffect(() => {
-  //   let map = tt.map({
-  //     key: process.env.REACT_APP_API_KEY,
-  //     container: mapElement.current
-  //   });
-  //   setMap(map)
-  //   // map.addControl(new tt.FullscreenControl());
-  //   // map.addControl(new tt.NavigationControl());
-
-  // }, [])
-
   return (
     <>
-      <Navbar title="Shortest Distance Map Visualizer" />
+
+      {/* <Navbar title="Shortest Distance Map Visualizer" />
+
 
       <div className="container my-5">
         <div className="container my-3">
           <SearchMap />
         </div>
-        
-        
+
         <div className="container my-3">
           <Map />
         </div>
 
-
-
-        {/* <div className="App">
-          <div ref={mapElement} className="map" id="map"></div>
-        </div> */}
-
         <div className="container my-3">
           <LocationsAdded locationList={locations} />
         </div>
+      </div> */}
 
-      </div>
+
+      <Router>
+        <Navbar title="Shortest Distance Map Visualizer" />
+
+          <Switch>
+            <Route exact path="/about" component={About} />
+
+            <Route exact path="/contact" component={Contact} />
+
+            <Route exact path="/" render={(props) => <Home locations={locations} {...props} />} />
+
+          </Switch>
+      </Router>
 
     </>
 
   );
 }
 
-export default App
+// export default withRouter(connect(null, null)(App));
+export default App;
