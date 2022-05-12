@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+// import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 // import { BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom"
 // import { connect } from "react-redux"
+
+import { Routes, Route} from "react-router-dom";
 
 import './App.css'
 import Navbar from './Components/Navbar'
@@ -34,7 +36,7 @@ const App = () => {
       </div> */}
 
 
-      <Router>
+      {/* <Router>
         <Navbar title="Shortest Distance Map Visualizer" />
 
           <Switch>
@@ -44,10 +46,21 @@ const App = () => {
 
             <Route exact path="/contact" component={Contact} />
 
-            {/* <Route exact path="/" component={() => <Home locations={locations}/>} /> */}
 
           </Switch>
-      </Router>
+      </Router> */}
+      {/* <Route exact path="/" component={() => <Home locations={locations}/>} /> */}
+
+      <div className="App">
+        {/* <h1>Welcome to React Router!</h1> */}
+
+        <Navbar title="Shortest Distance Map Visualizer"></Navbar>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="contact" element={<Contact />} />
+        </Routes>
+      </div>
 
     </>
 
