@@ -15,8 +15,8 @@ body{
 
 .map{
   margin: 5vw;
-  width: 800px;
-  height: 500px;
+  width: 950px;
+  height: 600px;
 }
 
 .marker{
@@ -29,4 +29,8 @@ body{
   background-image: url("../Assets/map-pin-solid.svg");
   width: 14px;
   height: 22px;
+}
+
+.tt-search-box-input-container{
+  width: 55vw;
 }

@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 // import { NavLink } from 'react-router-dom'
-import { useHistory } from 'react-router-dom'
+// import { useHistory } from 'react-router-dom'
+// import { Redirect } from 'react-router-dom'
 
 export default function Navbar(props) {
 
-    let history = useHistory();
+    // let history = useHistory();
 
     return (
         // Without Routes
@@ -37,8 +38,8 @@ export default function Navbar(props) {
         // With Routes
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
             <div className="container-fluid">
-                {/* <Link className="navbar-brand" to="/">{props.title}</Link> */}
-                <label className="navbar-brand" onClick={()=>{history.push("/")}}>{props.title}</label>
+                <Link className="navbar-brand" to="/">{props.title}</Link>
+                {/* <label className="navbar-brand" onClick={()=>{history.push("/")}}>{props.title}</label> */}
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="/navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
@@ -46,16 +47,13 @@ export default function Navbar(props) {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                {/* <Link className="nav-link active" aria-current="page" to="/">Home</Link> */}
-                                <label className="nav-link active" aria-current="page" onClick={()=>{history.push("/")}}>Home</label>
+                                <Link className="nav-link" aria-current="page" to="/">Home</Link>
                             </li>
                             <li className="nav-item">
-                                {/* <Link className="nav-link" to="/about">{props.about}</Link> */}
-                                <label className="nav-link" onClick={()=>{history.push("/about")}}>{props.about}</label>
+                                <Link className="nav-link" to="/about">{props.about}</Link>
                             </li>
                             <li className="nav-item">
-                                {/* <Link className="nav-link" to="/contact">{props.contact}</Link> */}
-                                <label className="nav-link" to="/contact">{props.contact}</label>
+                                <Link className="nav-link" to="/contact">{props.contact}</Link>
                             </li>
                         </ul>
                     </div>

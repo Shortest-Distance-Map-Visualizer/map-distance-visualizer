@@ -1,9 +1,16 @@
 import { useRef, useEffect, useState } from 'react'
 import * as tt from '@tomtom-international/web-sdk-maps'
 import * as ttser from '@tomtom-international/web-sdk-services'
+import LocationsAdded from './LocationsAdded'
+import { services } from '@tomtom-international/web-sdk-services';
+import SearchBox from '@tomtom-international/web-sdk-plugin-searchbox';
 
 import '../App.css'
 import '@tomtom-international/web-sdk-maps/dist/maps.css'
+import '@tomtom-international/web-sdk-plugin-searchbox/dist/SearchBox.css';
+
+// Selected Locations Array
+let selectedLocations = ['hellp', 'zolo', 'jp', 'ola']
 
 export default function Map() {
 
@@ -11,8 +18,7 @@ export default function Map() {
     const [map, setMap] = useState({})
     const [latitude, setLatitude] = useState(28.519200)
     const [longitude, setLongitude] = useState(77.365438)
-    // const [longitude, setLongitude] = useState(-0.112869)
-    // const [latitude, setLatitude] = useState(51.504)
+    // var [renderListLength, setRenderListLength] = useState(3)
 
 
     const convertToPoints = (lngLat) => {
@@ -39,7 +45,7 @@ export default function Map() {
             paint: {
                 'line-color': '#4a90e2',
                 'line-width': 6,
-            } 
+            }
         })
     }
 
@@ -53,9 +59,9 @@ export default function Map() {
             .addTo(map)
     }
 
-    
+
     useEffect(() => {
-        
+
         // Origin
         const origin = { lng: longitude, lat: latitude }
 
@@ -71,12 +77,35 @@ export default function Map() {
                 trafficFlow: true,
             },
             center: [longitude, latitude],
-            zoom: 14
+            zoom: 14,
+            // style: '../../Assets/darkWithPOI.json',
         });
         setMap(map)
+
+
+        let options = {
+            idleTimePress: 100,
+            minNumberOfCharacters: 0,
+            searchOptions: {
+                key: process.env.REACT_APP_API_KEY,
+                language: 'en-GB'
+            },
+            autocompleteOptions: {
+                key: process.env.REACT_APP_API_KEY,
+                language: 'en-GB'
+            },
+            labels: {
+                placeholder: 'Search for a location',
+                noResultsMessage: 'No results found.'
+            },
+            // distanceFromPoint: '4.3321,55.2121',
+            units: 'kilometers',
+            showSearchButton: true,
+        }
+        map.addControl(new SearchBox(services, options), 'top-left');
         map.addControl(new tt.NavigationControl())
 
-        
+
 
 
         // Adding Marker
@@ -161,11 +190,14 @@ export default function Map() {
         map.on('click', (e) => {
             destinations.push(e.lngLat)
             addDestinationMarker(e.lngLat, map)
+            var touchingLayer = map.queryRenderedFeatures(e.point)[0];// top layer
+            // console.log(touchingLayer)
+            // console.log(touchingLayer.properties)
+            // console.log(touchingLayer.properties.name)
+            selectedLocations.push(touchingLayer.properties.name)
+            // console.log(selectedLocations)
             recalculatePaths()
         })
-
-
-
 
 
         return () => map.remove()
@@ -174,12 +206,23 @@ export default function Map() {
     return (
         <>
             {map && <div className="app">
-                <div ref={mapElement} className="map" id="map" />
-                <div className='searchLatLong'>
+                <div id="search-panel" class="col"></div>
+                {/* <div ref={mapElement} className="map" id="map" onClick={()=> setRenderListLength(renderListLength+=1)} /> */}
+                <div ref={mapElement} className="map" id="map"/>
+                {/* {console.log([...selectedLocations])} */}
+                <LocationsAdded list={selectedLocations}/>
+                {/* {renderList && <LocationsAdded list={selectedLocations}/> } */}
+                {/* {setRenderList(false)} */}
+                {/* <ul className="list-group list-group-horizontal">
+                    {selectedLocations.map(item => (
+                        <li className="list-group-item">{item}</li>
+                    ))}
+                </ul> */}
+                {/* <div className='searchLatLong'>
                     <p>Enter Latitude and Longitude</p>
                     <input type="text" className="latitude" id="latitude" placeholder={latitude} onChange={(e) => { setLatitude(e.target.value) }} />
                     <input type="text" className="longitude" id="longitude" placeholder={longitude} onChange={(e) => { setLongitude(e.target.value) }} />
-                </div>
+                </div> */}
             </div>}
         </>
     )

@@ -1,4 +1,3 @@
-import React from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 // import { BrowserRouter as Router, Switch, Route, withRouter} from "react-router-dom"
 // import { connect } from "react-redux"
@@ -9,9 +8,10 @@ import About from './Components/About'
 import Home from './Components/Home'
 import Contact from './Components/Contact'
 
-const locations = ["Hello PG", "Zolo PG", "JP", "ola"]
+// const locations = ["Hello PG", "Zolo PG", "JP", "ola"]
 
 const App = () => {
+
 
   return (
     <>
@@ -38,11 +38,13 @@ const App = () => {
         <Navbar title="Shortest Distance Map Visualizer" />
 
           <Switch>
+            <Route exact path="/" component={Home} />
+            
             <Route exact path="/about" component={About} />
 
             <Route exact path="/contact" component={Contact} />
 
-            <Route exact path="/" render={(props) => <Home locations={locations} {...props} />} />
+            {/* <Route exact path="/" component={() => <Home locations={locations}/>} /> */}
 
           </Switch>
       </Router>
