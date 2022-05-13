@@ -2,6 +2,7 @@ import React , {useRef} from 'react'
 import '../App.css'
 import SelectMap from './SelectMap'
 
+// TODO: use database instead of array
 export const selectedLocations = []
 
 

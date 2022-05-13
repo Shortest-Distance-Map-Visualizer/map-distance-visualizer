@@ -6,8 +6,6 @@ import About from './Components/About'
 import Home from './Components/Home'
 import Contact from './Components/Contact'
 
-// const locations = ["Hello PG", "Zolo PG", "JP", "ola"]
-
 const App = () => {
 
 
