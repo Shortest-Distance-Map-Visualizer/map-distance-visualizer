@@ -2,7 +2,6 @@ import React from 'react'
 import '../App.css'
 import Map from './Map'
 
-// const locations = ["Hello PG", "Zolo PG", "JP", "ola"]
 
 export default function Home() {
     return (
