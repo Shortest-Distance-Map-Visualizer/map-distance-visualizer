@@ -10,15 +10,14 @@ import '@tomtom-international/web-sdk-maps/dist/maps.css'
 import '@tomtom-international/web-sdk-plugin-searchbox/dist/SearchBox.css';
 
 // Selected Locations Array
-let selectedLocations = ['hellp', 'zolo', 'jp', 'ola']
+let selectedLocations = []
 
 export default function Map() {
 
     const mapElement = useRef()
     const [map, setMap] = useState({})
-    const [latitude, setLatitude] = useState(28.519200)
-    const [longitude, setLongitude] = useState(77.365438)
-    // var [renderListLength, setRenderListLength] = useState(3)
+    const [latitude] = useState(28.519200)
+    const [longitude] = useState(77.365438)
 
 
     const convertToPoints = (lngLat) => {
@@ -61,10 +60,6 @@ export default function Map() {
 
 
     useEffect(() => {
-
-        // Origin
-        const origin = { lng: longitude, lat: latitude }
-
         // Destinations List
         const destinations = []
 
@@ -88,11 +83,14 @@ export default function Map() {
             minNumberOfCharacters: 0,
             searchOptions: {
                 key: process.env.REACT_APP_API_KEY,
-                language: 'en-GB'
+                language: 'en-GB',
+                limit: 5,
+                idxSet: 'POI'
             },
             autocompleteOptions: {
                 key: process.env.REACT_APP_API_KEY,
-                language: 'en-GB'
+                language: 'en-GB',
+                resultSet: 'brand'
             },
             labels: {
                 placeholder: 'Search for a location',
@@ -102,14 +100,49 @@ export default function Map() {
             units: 'kilometers',
             showSearchButton: true,
         }
-        map.addControl(new SearchBox(services, options), 'top-left');
+        const ttSearchBox = new SearchBox(services, options);
+        // ttSearchBox.on('tomtom.searchbox.resultsfound', handleResultsFound);
+        // ttSearchBox.on('tomtom.searchbox.resultselected', handleResultSelection);
+        // ttSearchBox.on('tomtom.searchbox.resultfocused', handleResultSelection);
+        // ttSearchBox.on('tomtom.searchbox.resultscleared', handleResultClearing);
+
+
+        // Origin
+        var origin = { lng: longitude, lat: latitude }
+
+        ttSearchBox.on('tomtom.searchbox.resultselected', function (res) {
+            // console.log(JSON.stringify(res.data));
+            if (res.data.result.type !== undefined && res.data.result.type === "POI") 
+            {
+                console.log("POI Search")
+                if(destinations.length === 0)
+                {
+                    origin.lng = res.data.result.position.lng
+                    origin.lat = res.data.result.position.lat
+                    destinations.push(res.data.result.position)
+                    addMarker(res.data.result.position)
+                    selectedLocations.push({ id: res.data.result.id, name: res.data.result.poi.name })
+                    // console.log(selectedLocations)
+                }
+                else
+                {
+                    destinations.push(res.data.result.position)
+                    addDestinationMarker(res.data.result.position, map)
+                    recalculatePaths()
+                    selectedLocations.push({ id: res.data.result.id, name: res.data.result.poi.name })
+                    // console.log(selectedLocations);
+                }
+            }
+        });
+
+        map.addControl(ttSearchBox, 'top-left');
         map.addControl(new tt.NavigationControl())
 
 
 
 
         // Adding Marker
-        const addMarker = () => {
+        const addMarker = (lngLat) => {
 
             // const popupOffset = { bottom: [0, -18] }
             // const popup = new tt.Popup({ offset: popupOffset }).setHTML('Hello PG')
@@ -118,22 +151,56 @@ export default function Map() {
             const element = document.createElement('div')
             element.className = 'marker'
 
-            const marker = new tt.Marker({
-                draggable: true,
+            new tt.Marker({
+                draggable: false,
                 element: element,
             })
-                .setLngLat([longitude, latitude])
-                .addTo(map)
+            .setLngLat([lngLat.lng, lngLat.lat])
+            .addTo(map)
 
-            marker.on('dragend', () => {
-                const newLongLat = marker.getLngLat()
-                setLongitude(newLongLat.lng)
-                setLatitude(newLongLat.lat)
-            })
+            // marker.on('dragend', () => {
+            //     const newLongLat = marker.getLngLat()
+            //     setLongitude(newLongLat.lng)
+            //     setLatitude(newLongLat.lat)
+            // })
 
             // marker.setPopup(popup).togglePopup()
         }
-        addMarker()
+        
+        map.on('click', (e) => {
+
+            var touchingLayer = map.queryRenderedFeatures(e.point)[0];// top layer
+            // console.log(JSON.stringify(touchingLayer))
+            // console.log(JSON.stringify(touchingLayer.geometry.type))
+            if (touchingLayer !== undefined) 
+            {
+                if (touchingLayer.layer.id === "POI") 
+                {
+                    // console.log("POI Map Click")
+                    // console.log(destinations)
+                    if(destinations.length === 0)
+                    {
+                        // console.log("Initial marker set.")
+                        origin.lng = e.lngLat.lng
+                        origin.lat = e.lngLat.lat
+                        destinations.push(e.lngLat)
+                        addMarker(e.lngLat)
+                        selectedLocations.push({id: touchingLayer.properties.id, name: touchingLayer.properties.name})
+                        // console.log(selectedLocations)
+                    }
+                    else
+                    {
+                        // console.log("Dest. marker set.")
+                        // console.log(JSON.stringify(touchingLayer))
+                        destinations.push(e.lngLat)
+                        addDestinationMarker(e.lngLat, map)
+                        recalculatePaths()
+                        selectedLocations.push({id: touchingLayer.properties.id, name: touchingLayer.properties.name})
+                        // console.log(selectedLocations)
+                    }
+                }
+            }
+        })
 
 
         const showPath = (locations) => {
@@ -187,19 +254,6 @@ export default function Map() {
         }
 
 
-        map.on('click', (e) => {
-            destinations.push(e.lngLat)
-            addDestinationMarker(e.lngLat, map)
-            var touchingLayer = map.queryRenderedFeatures(e.point)[0];// top layer
-            // console.log(touchingLayer)
-            // console.log(touchingLayer.properties)
-            // console.log(touchingLayer.properties.name)
-            selectedLocations.push(touchingLayer.properties.name)
-            // console.log(selectedLocations)
-            recalculatePaths()
-        })
-
-
         return () => map.remove()
     }, [latitude, longitude])
 
@@ -207,22 +261,8 @@ export default function Map() {
         <>
             {map && <div className="app">
                 <div id="search-panel" class="col"></div>
-                {/* <div ref={mapElement} className="map" id="map" onClick={()=> setRenderListLength(renderListLength+=1)} /> */}
-                <div ref={mapElement} className="map" id="map"/>
-                {/* {console.log([...selectedLocations])} */}
-                <LocationsAdded list={selectedLocations}/>
-                {/* {renderList && <LocationsAdded list={selectedLocations}/> } */}
-                {/* {setRenderList(false)} */}
-                {/* <ul className="list-group list-group-horizontal">
-                    {selectedLocations.map(item => (
-                        <li className="list-group-item">{item}</li>
-                    ))}
-                </ul> */}
-                {/* <div className='searchLatLong'>
-                    <p>Enter Latitude and Longitude</p>
-                    <input type="text" className="latitude" id="latitude" placeholder={latitude} onChange={(e) => { setLatitude(e.target.value) }} />
-                    <input type="text" className="longitude" id="longitude" placeholder={longitude} onChange={(e) => { setLongitude(e.target.value) }} />
-                </div> */}
+                <div ref={mapElement} className="map" id="map" />
+                <LocationsAdded list={selectedLocations} />
             </div>}
         </>
     )

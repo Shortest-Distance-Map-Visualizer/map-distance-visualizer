@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 
 export default function LocationsAdded(props) {
 
-    console.log("from locationsAddes: list=>" + props.list)
+    // console.log("from locationsAddes: list=>" + props.list)
     // var [reRender, setRerender] = useState(0);
 
     return (
         <ul className="list-group list-group-horizontal">
             {props.list.map(item => (
-                <li className="list-group-item">{item}</li>
+                <li className="list-group-item">{item.name}</li>
             ))}
         </ul>
     )
