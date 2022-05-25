@@ -9,8 +9,9 @@ import '@tomtom-international/web-sdk-plugin-searchbox/dist/SearchBox.css';
 
 // Selected Locations Array
 import { selectedLocations } from './Home'
-import { addMarker, searchOptions, retMap } from './MapFunctions'
+import { addMarker, searchOptions, retMap} from './MapFunctions'
 import SetMap from './SetMap'
+// import { getDistance } from './SearchDestinations';
 
 export default function SelectMap(props) {
 
@@ -46,6 +47,17 @@ export default function SelectMap(props) {
                     addMarker(e.lngLat, map)
                     selectedLocations.push({ id: touchingLayer.properties.id, name: touchingLayer.properties.name, lngLat: { lng: touchingLayer.geometry.coordinates[0], lat: touchingLayer.geometry.coordinates[1] } })
                     console.log(selectedLocations)
+                    // if(selectedLocations.length >= 2)
+                    // {
+                    //     // let len = selectedLocations.length
+                    //     // const lngLat1 = selectedLocations[len-1].lngLat
+                    //     // const lngLat2 = selectedLocations[len-2].lngLat
+                    //     // console.log(lngLat1, lngLat2)
+                    //     // getDistance(lngLat1, lngLat2)
+                    //     // console.log(distObj)
+                    //     // console.log("Distance: " + data.distance+ " km");
+                    //     // console.log("Time: " + data.time+ " min(s)");
+                    // }
                 }
             }
         })
@@ -57,7 +69,7 @@ export default function SelectMap(props) {
         <>
             {map && 
             (renderChildMap ?
-                <SetMap mapElement={props.mapElement}/> :
+                <SetMap mapElement={props.mapElement} /> :
                 <div className="app">
                     <div id="search-panel" className="col"></div>
                     <div ref={props.mapElement} className="map" id="map" />

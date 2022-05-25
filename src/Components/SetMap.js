@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import * as tt from '@tomtom-international/web-sdk-maps'
+// import * as ttser from '@tomtom-international/web-sdk-services'
 import LocationsAdded from './LocationsAdded'
 
 import '../App.css'
@@ -8,13 +9,16 @@ import '@tomtom-international/web-sdk-plugin-searchbox/dist/SearchBox.css';
 
 // Selected Locations Array
 import {selectedLocations} from './Home'
-import {addDestinationMarker, addMarker, recalculatePaths, retMap} from './MapFunctions'
+import {addDestinationMarker, addMarker, recalculatePaths, retMap, recalculatePathsCustom, renderPathCustom} from './MapFunctions'
+import {calculate} from './bfs'
 
 export default function SetMap(props) {
 
     const [map, setMap] = useState({})
-    const [latitude] = useState(28.519200)
-    const [longitude] = useState(77.365438)
+    // const [latitude] = useState(28.519200)
+    // const [longitude] = useState(77.365438)
+    const [latitude] = useState(selectedLocations[0].lngLat.lat)
+    const [longitude] = useState(selectedLocations[0].lngLat.lng)
 
     useEffect(() => {
         
@@ -22,21 +26,54 @@ export default function SetMap(props) {
         setMap(map)
         map.addControl(new tt.NavigationControl())
 
-        // Origin
-        var origin = { lng: selectedLocations[0].lngLat.lng, lat: selectedLocations[0].lngLat.lat }
-        addMarker(origin, map)
+        renderPathCustom(map)
 
-        // Destinations List
-        const destinations = []
-        for(let i = 1; i < selectedLocations.length; i++)
-        {
-            destinations.push(selectedLocations[i].lngLat)
-            addDestinationMarker(selectedLocations[i].lngLat, map)
-        }
-        recalculatePaths(destinations, origin, map)
+        // const renderPathCustom = async () => {
 
+        //     // Fill destination Matrix for TSP
+        //     if(selectedLocations.length >= 2)
+        //     {
+        //         await calculate()
+        //         //Selected locations updated acc to bfs dist.
+        //     }
+
+        //     // Origin
+        //     var origin = { lng: selectedLocations[0].lngLat.lng, lat: selectedLocations[0].lngLat.lat }
+        //     addMarker(origin, map)
+
+        //     // Destinations List
+        //     const destinations = []
+        //     for(let i = 1; i < selectedLocations.length; i++)
+        //     {
+        //         destinations.push(selectedLocations[i].lngLat)
+        //         addDestinationMarker(selectedLocations[i].lngLat, map)
+        //     }
+        //     recalculatePathsCustom(destinations, origin, map)
+        // }
+
+        // // Fill destination Matrix for TSP
+        // if(selectedLocations.length >= 2)
+        // {
+        //     calculate()
+        //     //Selected locations updated acc to bfs dist.
+        // }
+
+
+        // // Origin
+        // var origin = { lng: selectedLocations[0].lngLat.lng, lat: selectedLocations[0].lngLat.lat }
+        // addMarker(origin, map)
+
+        // // Destinations List
+        // const destinations = []
+        // for(let i = 1; i < selectedLocations.length; i++)
+        // {
+        //     destinations.push(selectedLocations[i].lngLat)
+        //     addDestinationMarker(selectedLocations[i].lngLat, map)
+        // }
+        // recalculatePaths(destinations, origin, map)
 
         return () => map.remove()
+
     }, [latitude, longitude, props.mapElement])
 
     return (
