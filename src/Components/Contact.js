@@ -1,46 +1,59 @@
 import React from 'react'
-
+import acc from './accounts.svg'
+// import * as Icon from 'bootstrap-icons';
 export default function Contact() {
     return (
         <>
-            <div class="accordion" id="accordionExample">
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                            Accordion Item #1
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                <div className="container marketing m-3 justify-content-center text-center">
+                    <div className="row">
+                        <div className="col-lg-4">
+                            <img className="img" src={acc} alt="this is car image" />
+                            {/* <svg className="bd-placeholder-img rounded-circle" width="140" height="140" src="" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg> */}
+
+                            <h2>Mohd. Ahmar Zaidi</h2>
+                            <p><i class="bi bi-envelope"></i> ahmarzaidi07@gmail.com</p>
+                            <p><i class="bi bi-telephone">  9554748555</i></p>
+                            {/* <p><i class="bi bi-github"></i> <a href=""></a></p> */}
+                            <p><a className="btn btn-secondary" href="https://github.com/AhmarZaidi"><i class="bi bi-github"></i> Github &raquo;</a></p>
                         </div>
+
+
+
+                        <div className="col-lg-4">
+                            <img className="img" src={acc} alt="this is car image" />
+                            <h2>Sarthak Jaiswal</h2>
+                            <p><i class="bi bi-envelope"></i> sarthak.8858@gmail.com</p>
+                            <p><i class="bi bi-telephone">  8174805384</i></p>
+                            {/* <p><i class="bi bi-github"></i> <a href=""></a></p> */}
+                            <p><a className="btn btn-secondary" href="https://github.com/sarthak-19"><i class="bi bi-github"></i> Github &raquo;</a></p>
+                        </div>
+
+
+
+                        <div className="col-lg-4">
+                            {/* <svg className="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg> */}
+                            <img className="img" src={acc} alt="this is car image" />
+                            <h2>Piyush Singh</h2>
+                            <p><i class="bi bi-envelope"></i> piyushsingh9862@gmail.com</p>
+                            <p><i class="bi bi-telephone">  8090838699</i></p>
+                            {/* <p><i class="bi bi-github"></i> <a href=""></a></p> */}
+                            <p><a className="btn btn-secondary" href="https://github.com/piyushsingh9862"><i class="bi bi-github"></i> Github &raquo;</a></p>
+                        </div>
+
+
+
+                        <div className="col-lg-4">
+                            {/* <svg className="bd-placeholder-img rounded-circle" width="140" height="140" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 140x140" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#777" /><text x="50%" y="50%" fill="#777" dy=".3em">140x140</text></svg> */}
+                            <img className="img" src={acc} alt="this is car image" />
+                            <h2>Saurabh Mor</h2>
+                            <p><i class="bi bi-envelope"></i> saurabhMor09@gmail.com</p>
+                            <p><i class="bi bi-telephone">  9991237555</i></p>
+                            {/* <p><i class="bi bi-github"></i> <a href=""></a></p> */}
+                            <p><a className="btn btn-secondary" href="#"><i class="bi bi-github"></i> Github &raquo;</a></p>
+                        </div>
+                        
                     </div>
                 </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                            Accordion Item #2
-                        </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            Accordion Item #3
-                        </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                            <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </>
-    )
+            </>
+            )
 }

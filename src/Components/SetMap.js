@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react'
 import * as tt from '@tomtom-international/web-sdk-maps'
-// import * as ttser from '@tomtom-international/web-sdk-services'
-import LocationsAdded from './LocationsAdded'
 
 import '../App.css'
 import '@tomtom-international/web-sdk-maps/dist/maps.css'
@@ -9,8 +7,9 @@ import '@tomtom-international/web-sdk-plugin-searchbox/dist/SearchBox.css';
 
 // Selected Locations Array
 import {selectedLocations} from './Home'
-import {addDestinationMarker, addMarker, recalculatePaths, retMap, recalculatePathsCustom, renderPathCustom} from './MapFunctions'
-import {calculate} from './bfs'
+import { retMap, renderBFS, renderRandom} from './MapFunctions'
+import { bfsColor, randomColor} from './Colors'
+import SelectList from './SelectList'
 
 export default function SetMap(props) {
 
@@ -20,57 +19,20 @@ export default function SetMap(props) {
     const [latitude] = useState(selectedLocations[0].lngLat.lat)
     const [longitude] = useState(selectedLocations[0].lngLat.lng)
 
+    
     useEffect(() => {
         
         var map = retMap(props.mapElement, longitude, latitude)
         setMap(map)
         map.addControl(new tt.NavigationControl())
 
-        renderPathCustom(map)
-
-        // const renderPathCustom = async () => {
-
-        //     // Fill destination Matrix for TSP
-        //     if(selectedLocations.length >= 2)
-        //     {
-        //         await calculate()
-        //         //Selected locations updated acc to bfs dist.
-        //     }
-
-        //     // Origin
-        //     var origin = { lng: selectedLocations[0].lngLat.lng, lat: selectedLocations[0].lngLat.lat }
-        //     addMarker(origin, map)
-
-        //     // Destinations List
-        //     const destinations = []
-        //     for(let i = 1; i < selectedLocations.length; i++)
-        //     {
-        //         destinations.push(selectedLocations[i].lngLat)
-        //         addDestinationMarker(selectedLocations[i].lngLat, map)
-        //     }
-        //     recalculatePathsCustom(destinations, origin, map)
-        // }
-
-        // // Fill destination Matrix for TSP
-        // if(selectedLocations.length >= 2)
-        // {
-        //     calculate()
-        //     //Selected locations updated acc to bfs dist.
-        // }
-
-
-        // // Origin
-        // var origin = { lng: selectedLocations[0].lngLat.lng, lat: selectedLocations[0].lngLat.lat }
-        // addMarker(origin, map)
-
-        // // Destinations List
-        // const destinations = []
-        // for(let i = 1; i < selectedLocations.length; i++)
-        // {
-        //     destinations.push(selectedLocations[i].lngLat)
-        //     addDestinationMarker(selectedLocations[i].lngLat, map)
-        // }
-        // recalculatePaths(destinations, origin, map)
+        const renderPaths = async ()=>
+        {
+            await renderRandom(map, 'random', randomColor, 8) 
+            
+            await renderBFS(map, 'bfs', bfsColor, 4)
+        }
+        renderPaths()
 
         return () => map.remove()
 
@@ -81,7 +43,8 @@ export default function SetMap(props) {
             {map && <div className="app">
                 <div id="search-panel" className="col"></div>
                 <div ref={props.mapElement} className="map" id="map" />
-                <LocationsAdded list={selectedLocations} />
+                <label>Selected List Order</label>
+                <SelectList list={selectedLocations} />
             </div>}
         </>
     )
