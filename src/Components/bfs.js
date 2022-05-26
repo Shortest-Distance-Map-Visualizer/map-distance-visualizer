@@ -48,6 +48,10 @@ export const calculate = async () => {
     distSavedElement.innerHTML = 'Distance Saved: ' + (randomCost[0] - bfsCost[0]) + ' meters'
 
     // console.log("Path: "+path)
+    const petrolPrice = 0.0053333
+    const costSavedElement = document.getElementById('costSaved')
+    costSavedElement.innerHTML = 'Cost Saved: ₹' + ((randomCost[0] - bfsCost[0])*petrolPrice.toFixed(2)) + " (₹96/L)"
+
 
     customLocations.push(selectedLocations[0])
 

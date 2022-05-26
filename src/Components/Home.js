@@ -45,6 +45,8 @@ export default function Home() {
                             <br />
                             <h2 id="distSaved"></h2>
                             <br />
+                            <h2 id="costSaved"></h2>
+                            <br />
                         </div>
                     </div>
                 </div>
